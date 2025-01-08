@@ -1,6 +1,7 @@
-# Ensures script uses relative paths instead of absolute.
 $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 $envFilePath = Join-Path -Path $scriptDirectory -ChildPath ".env"
+$backupDirectory = Join-Path -Path $scriptDirectory -ChildPath "backups"
+$dateSuffix = Get-Date -Format "yyyyMMdd-HHmmss"
 
 # Reports back confirming it can't find .env
 if (-not (Test-Path -Path $envFilePath)) {
@@ -35,6 +36,21 @@ foreach ($path in $potentialPaths) {
     $exists = Test-Path -Path $path.Value
     if ($exists) {
         Write-Host "Path for '$($path.Key)' exists: $($path.Value)"
+
+        # Replication before validation
+        $backupSubDirectory = Join-Path -Path $backupDirectory -ChildPath (Split-Path -Parent $path.Value)
+        $backupFilePath = Join-Path -Path $backupSubDirectory -ChildPath ("$(Split-Path $path.Value -Leaf)-$dateSuffix")
+
+        # Create backup directory
+        if (-not (Test-Path -Path $backupSubDirectory)) {
+            New-Item -ItemType Directory -Path $backupSubDirectory | Out-Null
+            Write-Host "Created backup SubDirectory $backupSubdirectory"
+        }
+        
+        # Copy files to backup directory
+        Copy-Item -Path $path.Value -Destination $backupFilePath -Force
+        Write-Host "Replicated '$($path.Value)' to '$backupFilePath'"
+
 
         # File extension validation (dev)
         $extension = [System.IO.Path]::GetExtension($path.Value).ToLower()
@@ -93,5 +109,5 @@ foreach ($path in $potentialPaths) {
     }
 } # End foreach
 
-Write-Host "Checks complete - Hit enter to close"
-Read-Host 
+Write-Host "Task complete - Please press enter to close"
+Read-Host
