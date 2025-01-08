@@ -1,12 +1,6 @@
 # Powershell Script Library
 
-Collection of scripts for a variety of purposes. Categorized
-
-## Description
-
-An in-depth paragraph about your project and overview of use.
-
-## Getting Started
+Collection of scripts for a variety of purposes. Categorized for which role they are suited too.
 
 ### Dependencies
 
