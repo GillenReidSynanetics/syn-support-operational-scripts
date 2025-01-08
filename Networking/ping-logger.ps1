@@ -1,0 +1,58 @@
+# Purpose of this script is to ping the choice IP and store log file locally for further inspection
+
+# User prompted for IP address.
+$ipAddress = Read-Host "Enter the IP address you want to ping"
+
+# Verify IP address is correct format for processing.
+if ($ipAddress -notmatch '^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$') {
+    Write-Host "Invalid IP address format. Please enter a valid IP address." -ForegroundColor Red
+    return
+}
+
+# Always press enter at this stage, as it will save the log file in the same directory as where the script is.
+$logPath = Read-Host "Enter the path to save the ping log file (or press Enter for current directory)"
+if (-not $logPath) {
+    $logPath = Join-Path (Get-Location) "ping_log.txt" 
+}
+
+# Ping test firing
+Write-Host "Performing ping test..."
+
+try {
+    # Create an array to store ping results
+    $pingResults = Test-Connection -ComputerName $ipAddress -Count 4 -ErrorAction Stop
+
+    # Calculate statistics
+    $averagePing = $pingResults | Measure-Object -Property ResponseTime -Average
+
+    # Determine the status
+    $status = if ($pingResults[0].StatusCode -eq 0) { "Success" } else { "Failed" }
+
+    # Format the ping details
+    $pingDetails = $pingResults | ForEach-Object {
+        "Reply from $($_.Address): bytes=$($_.BufferSize) time=$($_.ResponseTime)ms TTL=$($_.TimeToLive)"
+    } | Out-String
+
+    # Write to log file with enhanced formatting
+    $logEntry = @"
+-------------------------------------------
+Timestamp:     $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
+IP Address:    $ipAddress
+Status:        $status
+-------------------------------------------
+Ping Details:
+$pingDetails
+-------------------------------------------
+Average Ping:  $([math]::Round($averagePing.Average, 2)) ms
+-------------------------------------------
+
+"@
+
+    Add-Content $logPath $logEntry
+
+    Write-Host "Ping Result saved to log file, txt file should be in same directory - attach to ticket for inspection '$logPath'" -ForegroundColor Green
+} catch {
+    Write-Host "An error occurred during the ping test: $_" -ForegroundColor Red
+}
+
+# Made by Gillen 
