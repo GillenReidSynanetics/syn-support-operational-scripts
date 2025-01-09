@@ -1,0 +1,16 @@
+#!/bin/bash -x
+
+# Remember when running an update you have the option to sudo apt-mark hold <package name> which prevents whatever named package being upgraded.
+
+# Also note these scripts are strictly for command line based op, there are additional commands to clear space for the desktop versions.
+
+# Based on the ubuntu distribution
+
+########################
+
+sudo apt-get update # This lists off the available updates 
+sudo apt-get upgrade # This kicks off updating all packages to the latest versions
+
+#######################
+
+Gillen

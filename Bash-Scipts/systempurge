@@ -1,0 +1,21 @@
+#!/bin/bash -x
+  
+#Run the command df -h
+
+#This provides information on what disk space is being take up where, crucially the -h flag provides it in human readable format. Percentage and so on.
+
+#As before, the script run through a series of commands to tidy up some old packages that perhaps have been left lying around or chunks of data that arent doing anything.
+
+#Also note, these scripts are strictly for command line based op, there are additional commands to clear space for the desktop versions.
+
+#Based on the ubuntu distribution
+
+########################
+
+sudo apt-get autoremove #this removes packages that are no longer needed as they have been replaced by newer versions
+sudo apt-get clean #cleans the apt-get cache
+sudo apt-get autoremove --purge #purges old kernels that are no longer in use
+sudo apt-get autoclean #deletes all .deb files from /var/cache/apt/archives. It basically cleans up the apt-get cache
+
+#######################
+
