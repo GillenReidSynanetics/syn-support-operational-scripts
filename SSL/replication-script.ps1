@@ -25,6 +25,7 @@
 
 #>
 
+Set-ExecutionPolicy RemoteSigned
 
 $scriptPath = Split-Path -Path $MyInvocation.MyCommand.Path -Parent
 
