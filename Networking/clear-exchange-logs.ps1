@@ -1,3 +1,6 @@
+# Script to automatically clear any microsoft exchange logs.
+
+
 Set-Executionpolicy RemoteSigned
 $days=0
 $IISLogPath="C:\inetpub\logs\LogFiles\"
