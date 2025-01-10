@@ -2,6 +2,10 @@ $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 $envFilePath = Join-Path -Path $scriptDirectory -ChildPath ".env"
 $backupDirectory = Join-Path -Path $scriptDirectory -ChildPath "backups"
 $dateSuffix = Get-Date -Format "yyyyMMdd-HHmmss"
+$reportFilePath = Join-Path -path $scriptDirectory -ChildPath "report.json"
+
+
+$report = @()
 
 # Reports back confirming it can't find .env
 if (-not (Test-Path -Path $envFilePath)) {
@@ -108,6 +112,9 @@ foreach ($path in $potentialPaths) {
         Write-Warning "Path for '$($path.Key)' does NOT exist: $($path.Value)"
     }
 } # End foreach
+
+$report | ConvertTo-Json -Depth 2 | Set-Content -Path $reportFilePath
+Write-Host "Report Exported to $reportFilePath"
 
 Write-Host "Task complete - Please press enter to close"
 Read-Host
