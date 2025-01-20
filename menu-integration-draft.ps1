@@ -5,7 +5,8 @@ $mainmenu = {
     Write-Host  
     Write-Host  "1. Backup Script"  # Option to run the backup script
     Write-Host  "2. Validation Script"  # Option to run the validation script
-    Write-Host  "3. Exit"  # Option to exit the script
+    Write-Host  "3. Test Connections"
+    Write-Host  "4. Exit"  # Option to exit the script
     Write-Host  "Select option and press enter"
 }
 $mainmenu  # Display the menu
@@ -145,10 +146,25 @@ switch (Read-Host) {
         Read-Host
     }
     3 {
-        Write-Host "Exiting..."
-        exit
+        Write-Host "Testing End Points"
+        $fhirstoreheartbeat = @("")
+
+        foreach ($store in $fhirstoreheartbeat){
+            try {
+                $response = Invoke-RestMethod -Uri "$store/metadata" -Method Get
+                Write-Output "Connecting"
+            } catch {
+                Write-Error "Not Connecting"
+        }
+
+            exit
+        }
+    }
+
+    4 {
+        Write-Host "Exiting"
     }
     default {
-        Write-Host "Invalid option. Please select 1, 2, or 3."
+        Write-Host "Invalid option. Please select 1, 2, 3 or 4"
     }
 }
