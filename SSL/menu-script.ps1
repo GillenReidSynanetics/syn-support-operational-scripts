@@ -5,7 +5,7 @@ $mainmenu = {
     Write-Host
     Write-Host "1. Backup Script"  # Option to run the backup script
     Write-Host "2. Validation Script"  # Option to run the validation script
-    Write-Host "3. Test Connections"  # Option to test endpoint connections
+    Write-Host "3. Test Connections"  # Option to test endpoint connections (Not been tested yet)
     Write-Host "4. Exit"  # Option to exit the script
     Write-Host "Select option and press enter"
 }
