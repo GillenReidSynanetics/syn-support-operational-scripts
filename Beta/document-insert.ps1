@@ -1,38 +1,28 @@
 <#
 .SYNOPSIS
-    This script reads a CSV file and inserts data into a SQL table.
+    This script reads a CSV file and generates SQL INSERT statements for document configuration.
 
 .DESCRIPTION
-    The script reads a CSV file located at "C:\Trusts\RWW\Additional Docs\MDM-Document-Summary.csv".
-    For each line in the CSV file, it checks if the first column is "Y".
-    If so, it extracts various fields from the CSV line and constructs an SQL INSERT statement to insert the data into the "RWWXCH_Document_Table_Local.DocumentConfiguration" table.
+    The script prompts the user to enter the path to a CSV file containing document configuration data.
+    It reads the CSV file line by line, processes each line, and generates SQL INSERT statements for 
+    the RWWXCH_Document_Table_Local.DocumentConfiguration table based on the data in the CSV file.
 
-.PARAMETERS
-    None
+.PARAMETER csv
+    The path to the CSV file containing document configuration data.
 
 .NOTES
-    The script assumes the CSV file has the following columns:
-    - Column 0: Indicator (Y/N)
-    - Column 3: DocumentName
-    - Column 5: CareSetting
-    - Column 6: DocumentGroup
-    - Column 7: DocumentType
-    - Column 9: GP Indicator (Y/N)
-    - Column 10: DocumentSNOMEDCTCode
-    - Column 11: Fraxinus Indicator (Y/N)
-    - Column 13: Email Indicator (Y/N)
-
-    The script uses the current date and time for the DateAdded field in the SQL table.
-    The DocumentRuleSet is hardcoded to "S".
-    The Letter field is hardcoded to 0.
+    The script sets the execution policy to Bypass for the current process to allow script execution.
+    It uses a StreamReader to read the CSV file and processes each line to generate SQL INSERT statements.
+    The generated SQL statements are displayed in the console.
 
 .EXAMPLE
-    To run the script, simply execute it in a PowerShell session:
-    .\document-insert.ps1
-.AUTHOR
-    Mark Bain
+    PS> .\document-insert.ps1
+    Enter the path to the CSV file -eg C:\Trusts\RWW\Additional Docs\MDM-Document-Summary.csv: C:\path\to\your\file.csv
+    SQL Statements:
+    INSERT INTO RWWXCH_Document_Table_Local.DocumentConfiguration (CareSetting, DateAdded, DocumentGroup, DocumentName, DocumentRuleSet, DocumentType, Email, Fraxinus, GP, Letter, Share2Care, SourceApplication, DocumentSNOMEDCTCode) VALUES ('CareSettingValue', GETDATE(), 'DocumentGroupValue', 'DocumentNameValue', 'A', 'DocumentTypeValue', 1, 0, 1, 0, 1, 'SourceApplicationValue', 'DocumentSNOMEDCTCodeValue')
 
 #>
+
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 
 try {
@@ -60,7 +50,7 @@ try {
                 $CareSetting = $input[5]
                 $DocumentGroup = $input[6]
                 $DocumentName = $input[3]
-                $DocumentRuleSet = "A" #Don't know where this comes from
+                $DocumentRuleSet = "A" # Hard coded to A for now, understanding of document rule set required
                 $DocumentType = $input[7]
                 
                 if ($input[13] -eq "Y") {$Email = "1"}
@@ -72,7 +62,7 @@ try {
                 if ($input[9] -eq "Y") {$GP = "1"}
                 else  {$GP = "0"}
 
-                $Letter = 0 #Don't know where this comes from
+                $Letter = 0 # From the document logic it appears this is set to wether the patient has to get a letter or not?
 
 
                 $DocumentSNOMEDCTCode = $input[10]
