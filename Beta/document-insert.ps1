@@ -33,10 +33,13 @@
     Mark Bain
 
 #>
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+
 try {
     cls
 
-    $csv = "C:\Trusts\RWW\Additional Docs\MDM-Document-Summary.csv"
+    $csv = (Read-Host -Prompt "Enter the path to the CSV file -eg C:\Trusts\RWW\Additional Docs\MDM-Document-Summary.csv").Trim('"')
+
 
     if ($reader -ne $null) {
         $reader.Close()
@@ -45,6 +48,9 @@ try {
 
     $reader = New-Object System.IO.StreamReader($csv)
     if ($reader -ne $null) {
+        $sqlStatements = @()
+        $linecount = 0
+
         while (!$reader.EndOfStream) {
             $linecount++
             $line = $reader.ReadLine()
@@ -54,7 +60,7 @@ try {
                 $CareSetting = $input[5]
                 $DocumentGroup = $input[6]
                 $DocumentName = $input[3]
-                $DocumentRuleSet = "S" #Don't know where this comes from
+                $DocumentRuleSet = "A" #Don't know where this comes from
                 $DocumentType = $input[7]
                 
                 if ($input[13] -eq "Y") {$Email = "1"}
@@ -84,6 +90,9 @@ try {
                 $sql
             }
         }
+
+        Write-Host "SQL Statements:" -ForegroundColor Green
+        $sqlStatements | ForEach-Object { Write-Host $_ }
     }
   
 
