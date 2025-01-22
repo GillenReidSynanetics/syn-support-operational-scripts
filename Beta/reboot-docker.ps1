@@ -1,3 +1,5 @@
+$scriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Path -Parent
+
 # Prompt the user to enter the Docker Compose project name or directory
 $ProjectDir = Read-Host "Enter the path to the Docker Compose project directory"
 
@@ -14,7 +16,8 @@ Set-Location -Path $ProjectDir
 $Confirmation = Read-Host "Are you sure you want to stop and remove the project, including orphan containers? (yes/no)"
 if ($Confirmation -eq "yes") {
     # Execute the Docker Compose down command with the --remove-orphans flag
-    docker compose down --remove-orphans
+    docker-compose down --remove-orphans
+    docker-compose up -d 
 
     Write-Host "Docker Compose project has been stopped, and orphan containers have been removed."
 } else {

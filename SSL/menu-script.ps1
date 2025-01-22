@@ -1,3 +1,5 @@
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+
 # Main menu display function
 $mainmenu = {
     Write-Host "***************"

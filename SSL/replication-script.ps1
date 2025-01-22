@@ -26,7 +26,7 @@
 #>
 
 
-Set-ExecutionPolicy RemoteSigned
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 
 $scriptPath = Split-Path -Path $MyInvocation.MyCommand.Path -Parent
 
