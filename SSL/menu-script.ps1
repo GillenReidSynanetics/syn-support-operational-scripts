@@ -1,3 +1,32 @@
+<#
+.SYNOPSIS
+    A PowerShell script to display a menu and execute various operational tasks such as backup, validation, testing connections, and rebooting containers.
+
+.DESCRIPTION
+    This script provides a menu-driven interface to perform the following tasks:
+    1. Backup important files and directories.
+    2. Validate environment variables and backup files.
+    3. Test endpoint connections. (Not been tested yet)
+    4. Reboot Docker containers. 
+    5. Exit the script.
+
+.PARAMETERS
+    None.
+
+.NOTES
+    - The script sets the execution policy to bypass for the current process.
+    - The script uses the `Read-Host` cmdlet to capture user input and execute the corresponding task.
+    - The script performs file operations such as copying and validating files, and interacting with Docker containers.
+
+.EXAMPLE
+    To run the script, execute the following command in PowerShell:
+    ```powershell
+    .\menu-script.ps1
+    ```
+
+    Follow the on-screen instructions to select an option from the menu and perform the desired task.
+
+#>
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 
 # Main menu display function
@@ -7,8 +36,8 @@ $mainmenu = {
     Write-Host
     Write-Host "1. Backup Script"  # Option to run the backup script
     Write-Host "2. Validation Script"  # Option to run the validation script
-    Write-Host "3. Test Connections"  # Option to test endpoint connections (Not been tested yet)
-    Write-Host "4. Reboot Container"  # Option to reboot the container
+    Write-Host "3. Test Connections (Not Tested Yet)"  # Option to test endpoint connections (Not been tested yet)
+    Write-Host "4. Reboot Container (Not Tested Yet)"  # Option to reboot the container
     Write-Host "5. Exit"  # Option to exit the script
     Write-Host "Select option and press enter"
 }

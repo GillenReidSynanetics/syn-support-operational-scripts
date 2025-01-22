@@ -1,3 +1,24 @@
+<#
+.SYNOPSIS
+    Script to validate and backup SSL certificate files mentioned in a .env file.
+
+.DESCRIPTION
+    This script reads a .env file for file paths, checks if the files exist, creates backups, and validates SSL certificate expiry dates.
+    It supports .pem and .crt certificate files and skips .key files.
+
+.PARAMETERS
+    None
+
+.NOTES
+    - The script expects the .env file to be in the same directory as the script.
+    - The script creates a backup of the files in a 'backups' directory within the script's directory.
+    - The script generates a report in JSON format and saves it as 'report.json' in the script's directory.
+
+.EXAMPLE
+    .\cert-pathway.ps1
+    Runs the script and performs the validation and backup operations.
+
+#>
 $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
 $envFilePath = Join-Path -Path $scriptDirectory -ChildPath ".env"
 $backupDirectory = Join-Path -Path $scriptDirectory -ChildPath "backups"
