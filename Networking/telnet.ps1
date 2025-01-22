@@ -1,3 +1,37 @@
+<#
+.SYNOPSIS
+    Tests functionality of an SMTP server using Telnet via PowerShell.
+
+.DESCRIPTION
+    This script is used to test the functionality of an SMTP server in an environment where a virtual SMTP server is still in use via IIS. 
+    It enables the Telnet client, connects to the specified SMTP server, and sends a test email.
+
+.PARAMETER smtpServer
+    The name of the local SMTP server.
+
+.PARAMETER smtpPort
+    The port number of the SMTP server. Default is 587.
+
+.PARAMETER senderEmail
+    The email address of the sender.
+
+.PARAMETER recipientEmail
+    The email address of the recipient.
+
+.PARAMETER subject
+    The subject of the test email. Default is "Test Email from PowerShell".
+
+.PARAMETER body
+    The body content of the test email. Default is "This is a test email sent via PowerShell and Telnet."
+
+.NOTES
+    Ensure that the Telnet client is enabled on the system before running this script.
+
+.EXAMPLE
+    .\telnet.ps1 -smtpServer "smtp.example.com" -smtpPort 587 -senderEmail "sender@example.com" -recipientEmail "recipient@example.com"
+
+    This example sends a test email from "sender@example.com" to "recipient@example.com" using the SMTP server "smtp.example.com" on port 587.
+#>
 
 # This script Tests functionality of an SMTP server, used in an enviroment where virtual SMTP server was still in use via IIS
 

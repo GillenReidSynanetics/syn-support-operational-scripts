@@ -1,3 +1,26 @@
+<#
+.SYNOPSIS
+    This script pings a specified IP address and logs the results to a file for further inspection.
+
+.DESCRIPTION
+    The script prompts the user to enter an IP address and verifies its format. It then asks for a path to save the log file, defaulting to the current directory if none is provided. The script performs a ping test to the specified IP address, calculates the average response time, and logs the results with detailed information including timestamp, IP address, status, and ping details.
+
+.PARAMETER ipAddress
+    The IP address to ping, entered by the user.
+
+.PARAMETER logPath
+    The path where the ping log file will be saved. If not provided, the log file will be saved in the current directory with the name "ping_log.txt".
+
+.EXAMPLE
+    PS> .\ping-logger.ps1
+    Enter the IP address you want to ping: 8.8.8.8
+    Enter the path to save the ping log file (or press Enter for current directory):
+    Performing ping test...
+    Ping Result saved to log file, txt file should be in same directory - attach to ticket for inspection 'C:\path\to\current\directory\ping_log.txt'
+
+.NOTES
+    Made by Gillen
+#>
 # Purpose of this script is to ping the choice IP and store log file locally for further inspection
 
 # User prompted for IP address.

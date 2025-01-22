@@ -1,3 +1,34 @@
+<#
+.SYNOPSIS
+    Script runs a system clean up performing core clean up tasks.
+
+.DESCRIPTION
+    This script performs a system clean up by deleting temporary files, browser caches, and other unnecessary files from the system and user profiles. It logs the actions taken during the clean up process.
+
+.PARAMETER LogFilePath
+    The path to the log file where the clean up actions will be recorded. Default is "C:\Temp\CleanupLog.txt".
+
+.FUNCTIONS
+    LogMessage
+        Logs a message with a timestamp to the specified log file.
+
+    DeleteFiles
+        Deletes files from the specified path and logs the action. If an error occurs, it logs the error message.
+
+    DeleteUserProfileFiles
+        Deletes temporary and cache files from user profiles, including browser caches for Internet Explorer, Microsoft Edge, Google Chrome, and Mozilla Firefox.
+
+.EXAMPLE
+    .\clean-up.ps1
+    Runs the clean up script with the default log file path.
+
+    .\clean-up.ps1 -LogFilePath "D:\Logs\CleanupLog.txt"
+    Runs the clean up script with a custom log file path.
+
+.NOTES
+    Ensure the script is run with administrative privileges to delete files from system directories.
+
+#>
 # Script runs a system clean up performing core clean up tasks.
 
 param (
