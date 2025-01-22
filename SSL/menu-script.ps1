@@ -6,7 +6,8 @@ $mainmenu = {
     Write-Host "1. Backup Script"  # Option to run the backup script
     Write-Host "2. Validation Script"  # Option to run the validation script
     Write-Host "3. Test Connections"  # Option to test endpoint connections (Not been tested yet)
-    Write-Host "4. Exit"  # Option to exit the script
+    Write-Host "4. Reboot Container"  # Option to reboot the container
+    Write-Host "5. Exit"  # Option to exit the script
     Write-Host "Select option and press enter"
 }
 & $mainmenu  # Display the menu
@@ -158,7 +159,20 @@ switch (Read-Host) {
             }
         }
     }
-    4 {
+4 {
+    Write-Host "Rebooting Container"
+    $fhirstoreheartbeat = @("")  # Define FHIR endpoints here
+
+    foreach ($store in $fhirstoreheartbeat) {
+        try {
+            $response = Invoke-RestMethod -Uri "$store/metadata" -Method Get
+            Write-Output "Connecting"
+        } catch {
+            Write-Error "Not Connecting"
+        }
+    }
+}
+5 {
         Write-Host "Exiting..."
         exit
     }
@@ -166,3 +180,4 @@ switch (Read-Host) {
         Write-Host "Invalid option. Please select 1, 2, 3, or 4."
     }
 }
+

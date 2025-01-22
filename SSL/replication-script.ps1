@@ -1,29 +1,30 @@
 <#
-    Script Name: Backup Script for Configuration Files and Certificates
-    Author: Gillen Reid
+.SYNOPSIS
+  Creates a backup of existing certificates and Docker environment files.
 
-    Description:
-    This script creates a timestamped backup folder in the same directory as the script.
-    It replicates the following items:
-      - The `.env` file
-      - The `docker-compose.yml` file
-      - The entire contents of the `jwt` folder
-      - The entire contents of the `ssl` folder
+.DESCRIPTION
+  This script sets the execution policy to RemoteSigned, creates a timestamped backup folder, 
+  and copies the .env file, docker-compose.yml file, and the 'jwt' and 'ssl' directories 
+  into the backup folder.
 
-    The files and folders are copied to a new folder named "BackupFolder <timestamp>",
-    where <timestamp> is the current date and time in "yyyyMMdd_HHmmss" format.
+.PARAMETER None
+  This script does not take any parameters.
 
-    Usage:
-    Run this script in a PowerShell environment. Ensure it has access to the files
-    and folders you want to back up. The resulting backup folder will be created
-    in the same directory as the script.
+.OUTPUTS
+  None
 
-    Notes:
-    - Existing backup folders are not overwritten.
-    - Ensure you have sufficient permissions to read the source files and write
-      to the destination folder.
+.NOTES
+  The script creates a backup folder with a timestamp in its name and copies the specified files 
+  and directories into it. The backup folder is located in the same directory as the script.
+
+.EXAMPLE
+  To run the script, execute the following command in PowerShell:
+  .\replication-script.ps1
+
+  This will create a backup folder and copy the necessary files and directories into it.
 
 #>
+
 
 Set-ExecutionPolicy RemoteSigned
 
