@@ -61,11 +61,28 @@ switch (Read-Host) {
         New-Item -ItemType Directory -Path $backupFolder -Force
 
         # Copy important files to the backup folder
-        Copy-Item -Path (Join-Path -Path $scriptPath -ChildPath '.env') -Destination $backupFolder
-        Copy-Item -Path (Join-Path -Path $scriptPath -ChildPath 'docker-compose.yml') -Destination $backupFolder
-        Copy-Item -Path (Join-Path -Path $scriptPath -ChildPath 'jwt') -Destination $backupFolder -Recurse
-        Copy-Item -Path (Join-Path -Path $scriptPath -ChildPath 'ssl') -Destination $backupFolder -Recurse
-
+        if (Test-Path -Path (Join-Path -Path $scriptPath -ChildPath '.env')) {
+            Copy-Item -Path (Join-Path -Path $scriptPath -ChildPath '.env') -Destination $backupFolder
+        } else {
+            Write-Warning "No .env file found in the script directory."
+        }
+        if (Test-Path -Path (Join-Path -Path $scriptPath -ChildPath 'docker-compose.yml')) {
+            Copy-Item -Path (Join-Path -Path $scriptPath -ChildPath 'docker-compose.yml') -Destination $backupFolder
+        } else {
+            Write-Warning "No docker-compose.yml file found in the script directory."
+        }
+        
+        if (Test-Path -Path (Join-Path -Path $scriptPath -ChildPath 'jwt')) {
+            Copy-Item -Path (Join-Path -Path $scriptPath -ChildPath 'jwt') -Destination $backupFolder -Recurse
+        } else {
+            Write-Warning "No jwt directory found in the script directory."
+        }
+        
+        if (Test-Path -Path (Join-Path -Path $scriptPath -ChildPath 'ssl')) {
+            Copy-Item -Path (Join-Path -Path $scriptPath -ChildPath 'ssl') -Destination $backupFolder -Recurse
+        } else {
+            Write-Warning "No ssl directory found in the script directory."
+        }
         # Notify the user of backup completion
         Write-Host "Backup of existing certificates, docker .env, and compose file complete. Inspect in $backupFolder"
     }
