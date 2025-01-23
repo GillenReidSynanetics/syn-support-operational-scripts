@@ -6,7 +6,7 @@
     This script provides a menu-driven interface to perform the following tasks:
     1. Backup important files and directories.
     2. Validate environment variables and backup files.
-    3. Test endpoint connections. (Not been tested yet)
+    3. Test endpoint connections. (Not tested yet)
     4. Reboot Docker containers. 
     5. Exit the script.
 
@@ -36,8 +36,8 @@ $mainmenu = {
     Write-Host
     Write-Host "1. Backup Script"  # Option to run the backup script
     Write-Host "2. Validation Script"  # Option to run the validation script
-    Write-Host "3. Test Connections (Not Tested Yet)"  # Option to test endpoint connections (Not been tested yet)
-    Write-Host "4. Reboot Container (Not Tested Yet)"  # Option to reboot the container
+    Write-Host "3. Test Connections (Not Tested Yet)"  # Option to test endpoint connections (Not tested yet)
+    Write-Host "4. Reboot Container (Not tested yet)"  # Option to reboot the container
     Write-Host "5. Exit"  # Option to exit the script
     Write-Host "Select option and press enter"
 }
@@ -57,8 +57,14 @@ switch (Read-Host) {
         # Define the backup folder path
         $backupFolder = Join-Path -Path $scriptPath -ChildPath "BackupFolder $timestamp"
 
-        # Create the backup folder
-        New-Item -ItemType Directory -Path $backupFolder -Force
+        # Create the backup folder with error handling
+        try {
+            New-Item -ItemType Directory -Path $backupFolder -Force | Out-Null
+            Write-Host "Backup folder created at: $backupFolder"
+        } catch {
+            Write-Error "Failed to create backup folder: $backupFolder. Error: $_"
+            exit 1
+        }
 
         # Copy important files to the backup folder
         if (Test-Path -Path (Join-Path -Path $scriptPath -ChildPath '.env')) {
@@ -97,6 +103,23 @@ switch (Read-Host) {
         $backupDirectory = Join-Path -Path $scriptDirectory -ChildPath "backups"
         $dateSuffix = Get-Date -Format "yyyyMMdd_HHmmss"
         $reportFilePath = Join-Path -Path $scriptDirectory -ChildPath "report.json"
+
+        # Check if .env file exists
+        if (-not (Test-Path -Path $envFilePath)) {
+            Write-Error "The .env file does not exist in the script directory."
+            exit 1
+        }
+
+        # Check if backup directory exists, if not create it
+        if (-not (Test-Path -Path $backupDirectory)) {
+            try {
+            New-Item -ItemType Directory -Path $backupDirectory -Force | Out-Null
+            Write-Host "Created backup directory: $backupDirectory"
+            } catch {
+            Write-Error "Failed to create backup directory: $backupDirectory. Error: $_"
+            exit 1
+            }
+        }
 
         $report = @()  # Initialize an empty report array
 
@@ -236,7 +259,7 @@ switch (Read-Host) {
     }
     
     # Return to the original location
-    Set-Location -Path (Get-Location).Path
+    # (No action needed as the script will exit after this point)
 }
 5 {
         Write-Host "Exiting..."
