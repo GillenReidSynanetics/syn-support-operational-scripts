@@ -1,3 +1,26 @@
+<#
+.SYNOPSIS
+    Script to detect the presence of a specified application on a Windows machine.
+
+.DESCRIPTION
+    This script checks for the presence of an application by name using the Win32_Product class.
+    It sets the execution policy to RemoteSigned for the current process to allow script execution.
+    If the application is found, it returns an exit code of 0, indicating to Intune that the application is installed.
+    If the application is not found, it returns an exit code of 1, indicating to Intune that the application is not installed.
+
+.PARAMETER AppName
+    The name of the application to detect. Replace "(APP-NAME-GOES-HERE)" with the actual application name.
+
+.EXAMPLE
+    .\app-detection.ps1
+    This example runs the script and checks for the specified application.
+
+.NOTES
+    Author: [Your Name]
+    Date: [Date]
+    Version: 1.0
+    This script requires administrative privileges to run.
+#>
 # Set execution policy
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force
 
