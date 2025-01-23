@@ -217,31 +217,31 @@ switch (Read-Host) {
         Write-Host "Task complete - Please press enter to close"
         Read-Host
     }
-    3 {
-        Write-Host "Testing End Points"
-        $fhirstoreheartbeat = @("")  # Define FHIR endpoints here
+#     3 {
+#         Write-Host "Testing End Points"
+#         $fhirstoreheartbeat = @("")  # Define FHIR endpoints here
 
-        foreach ($store in $fhirstoreheartbeat) {
-            try {
-                $response = Invoke-RestMethod -Uri "$store/metadata" -Method Get
-                Write-Output "Connecting"
-            } catch {
-                Write-Error "Not Connecting"
-            }
-        }
-    }
-4 {
-    Write-Host "Rebooting Container"
-    $scriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Path -Parent
+#         foreach ($store in $fhirstoreheartbeat) {
+#             try {
+#                 $response = Invoke-RestMethod -Uri "$store/metadata" -Method Get
+#                 Write-Output "Connecting"
+#             } catch {
+#                 Write-Error "Not Connecting"
+#             }
+#         }
+#     }
+# 4 {
+    # Write-Host "Rebooting Container"
+    # $scriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Path -Parent
 
-    # Prompt the user to enter the Docker Compose project name or directory
-    $ProjectDir = Read-Host "Enter the path to the Docker Compose project directory"
+    # # Prompt the user to enter the Docker Compose project name or directory
+    # $ProjectDir = Read-Host "Enter the path to the Docker Compose project directory"
     
-    # Validate the user input
-    if (-not (Test-Path $ProjectDir)) {
-        Write-Host "The specified directory does not exist. Exiting the script." -ForegroundColor Red
-        exit
-    }
+    # # Validate the user input
+    # if (-not (Test-Path $ProjectDir)) {
+    #     Write-Host "The specified directory does not exist. Exiting the script." -ForegroundColor Red
+    #     exit
+    # }
     
     # Navigate to the project directory
     Set-Location -Path $ProjectDir
