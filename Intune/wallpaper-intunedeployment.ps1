@@ -1,6 +1,18 @@
-# Relatively simple script to system wide deploy a wall paper for all managed machines - ensure the image you are using remains the same name.
-# For example, if you have image1 and want to replace it with image2 - best way to action is to rename imageB to imageA to ensure the image remains effective.
-# Backup and over write your AZURE location image storage also.
+# 
+# This script is used to deploy a wallpaper system-wide for all managed machines via Intune.
+# 
+# The script performs the following actions:
+# 1. Defines registry key paths and values for the wallpaper settings.
+# 2. Specifies the URL of the image stored in Azure Blob Storage and the local directory path where the image will be saved.
+# 3. Checks if the specified local directory exists; if not, it creates the directory.
+# 4. Downloads the wallpaper image from the specified URL to the local directory.
+# 5. Checks if the registry key path exists; if not, it creates the registry key path.
+# 6. Sets the registry values for the wallpaper image path, status, and URL.
+# 7. Updates the system parameters to apply the new wallpaper.
+# 
+# Note:
+# - Ensure the image file name remains consistent to avoid issues with deployment.
+# - Backup and overwrite the image in the Azure Blob Storage location as needed.
 
 $RegKeyPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP"
 

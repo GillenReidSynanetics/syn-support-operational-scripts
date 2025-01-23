@@ -1,3 +1,27 @@
+<#
+.SYNOPSIS
+    Generic script to replicate and backup Microsoft Outlook signatures.
+
+.DESCRIPTION
+    This script copies all signature files from the default Microsoft Outlook signatures folder to a backup folder.
+    After successfully copying the files, it deletes the original signature files from the source folder.
+
+.PARAMETER sFolder
+    The path to the Microsoft Outlook signatures folder.
+
+.PARAMETER sBackupFolder
+    The path to the backup folder where the signature files will be copied.
+
+.NOTES
+    Author: [Your Name]
+    Date: [Date]
+    Version: 1.0
+
+.EXAMPLE
+    .\signature-backup.ps1
+    This will execute the script and perform the backup and deletion of signature files.
+
+#>
 # Generic script to replicate MS signatures
 # Declaring Pathways for both signature and backup folder
 # Purpose of this script is to copy sig files to a backup folder, then clearing the folder.

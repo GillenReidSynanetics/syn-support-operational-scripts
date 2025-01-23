@@ -1,3 +1,26 @@
+<#
+.SYNOPSIS
+    Connects to Azure Graph and retrieves all device management scripts in an Azure environment.
+
+.DESCRIPTION
+    This script connects to the Azure Graph API and retrieves all device management scripts available in the specified Azure environment.
+    The scripts are then saved to a specified local directory.
+
+.NOTES
+    This script has not been tested for Synanetics.
+
+.PARAMETER Path
+    The local directory where the scripts will be saved. Default is "C:\temp".
+
+.EXAMPLE
+    .\devicemanagement-scripts.ps1
+    Connects to Azure Graph, retrieves all device management scripts, and saves them to the default directory "C:\temp".
+
+.EXAMPLE
+    .\devicemanagement-scripts.ps1 -Path "D:\Scripts"
+    Connects to Azure Graph, retrieves all device management scripts, and saves them to the specified directory "D:\Scripts".
+
+#>
 # Script will connect to azure graph and grab a copy of all device management scripts in an azure enviroment
 
 ## Not tested for synanetics ##
