@@ -243,24 +243,24 @@ switch (Read-Host) {
     #     exit
     # }
     
-    # Navigate to the project directory
-    Set-Location -Path $ProjectDir
+#     # Navigate to the project directory
+#     Set-Location -Path $ProjectDir
     
-    # Confirm with the user before running the 'docker compose down --remove-orphans' command
-    $Confirmation = Read-Host "Are you sure you want to stop and remove the project, including orphan containers? (yes/no)"
-    if ($Confirmation -eq "yes") {
-        # Execute the Docker Compose down command with the --remove-orphans flag
-        docker-compose down --remove-orphans
-        docker-compose up -d 
+#     # Confirm with the user before running the 'docker compose down --remove-orphans' command
+#     $Confirmation = Read-Host "Are you sure you want to stop and remove the project, including orphan containers? (yes/no)"
+#     if ($Confirmation -eq "yes") {
+#         # Execute the Docker Compose down command with the --remove-orphans flag
+#         docker-compose down --remove-orphans
+#         docker-compose up -d 
     
-        Write-Host "Docker Compose project has been stopped, and orphan containers have been removed."
-    } else {
-        Write-Host "Operation cancelled by the user. No changes were made." -ForegroundColor Yellow
-    }
+#         Write-Host "Docker Compose project has been stopped, and orphan containers have been removed."
+#     } else {
+#         Write-Host "Operation cancelled by the user. No changes were made." -ForegroundColor Yellow
+#     }
     
-    # Return to the original location
-    # (No action needed as the script will exit after this point)
-}
+#     # Return to the original location
+#     # (No action needed as the script will exit after this point)
+# }
 5 {
         Write-Host "Exiting..."
         exit
