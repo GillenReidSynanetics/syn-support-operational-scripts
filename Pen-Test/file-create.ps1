@@ -1,3 +1,21 @@
+<#
+.SYNOPSIS
+This script creates a random directory under C:\Windows\System32.
+
+.DESCRIPTION
+The script bypasses the execution policy for the current session and defines a function to create a random directory under C:\Windows\System32. If the directory does not already exist, it will be created. The script then calls this function to create or retrieve a random directory.
+
+.PARAMETER None
+This script does not take any parameters.
+
+.EXAMPLE
+.\file-create.ps1
+This will create a random directory under C:\Windows\System32 if it does not already exist and return the path of the created or existing directory.
+
+.NOTES
+- Ensure you have the necessary permissions to create directories under C:\Windows\System32.
+- Use with caution as creating directories in system paths can have security implications.
+#>
 # Allow the script to run by bypassing the execution policy for this session
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 
