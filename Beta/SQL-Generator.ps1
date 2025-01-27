@@ -1,15 +1,15 @@
-function Generate-SQL {
-    param (
-        [string]$TableName,
-        [string]$ColumnName,
-        [array]$DataType,
-        [array]$Length,
-    )
+# function Generate-SQL {
+#     param (
+#         [string]$TableName,
+#         [string]$ColumnName,
+#         [array]$DataType,
+#         [array]$Length,
+#     )
 
-    switch ($queryType) {
-        "select" {
-            $query = "SELECT * FROM $TableName"
-        }
-    }
+#     switch ($queryType) {
+#         "select" {
+#             $query = "SELECT * FROM $TableName"
+#         }
+#     }
     
-}
+# }
