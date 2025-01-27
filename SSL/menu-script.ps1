@@ -32,11 +32,11 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 # Main menu display function
 $mainmenu = {
     Write-Host "***************"
-    Write-Host "* Menu *"
-    Write-Host
+    Write-Host "SSL Management Menu"
+    Write-Host 
     Write-Host "1. Backup Script"  # Option to run the backup script
     Write-Host "2. Validation Script"  # Option to run the validation script
-    Write-Host "3. Test Connections (Not Tested Yet)"  # Option to test endpoint connections (Not tested yet)
+    Write-Host "3. Inventory Reporter"  # Option to to sample local docker enviroment (Not tested yet)
     Write-Host "4. Reboot Container (Not tested yet)"  # Option to reboot the container
     Write-Host "5. Exit"  # Option to exit the script
     Write-Host "Select option and press enter"
@@ -217,50 +217,95 @@ switch (Read-Host) {
         Write-Host "Task complete - Please press enter to close"
         Read-Host
     }
-#     3 {
-#         Write-Host "Testing End Points"
-#         $fhirstoreheartbeat = @("")  # Define FHIR endpoints here
+    
+    3 {
+        Write-Host "Sampling Docker Inventory and Reporting"
+        
+        param (
+    [string]$outputFile = ".\docker_data.csv"
+    )
+    
+    @("Type,Name,Details") | Set-Content -Path $outputFile
+    
+    function Test-Docker {
+        if (-not(Get-Command "docker" -ErrorAction SilentlyContinue)) {
+            Write-Error "Docker not installed"
+            exit 1
+        }
+    }
+    
+    function get-docker-containers {
+        try {
+            docker ps --format "ID={{.ID}},Name={{.Names}},Image={{.Image}},Status={{.Status}},Ports={{.Ports}}" | ConvertFrom-Csv | Export-Csv -Path $outputFile -Append -NoTypeInformation
+        } catch {
+            Write-Error "Failed to retrieve Docker containers: $_"
+        }
+    }
+    
+    function get-docker-images {
+        try {
+            docker images --format "ID={{.ID}},Repository={{.Repository}},Tag={{.Tag}},Size={{.Size}}" | ConvertFrom-Csv | Export-Csv -Path $outputFile -Append -NoTypeInformation
+        } catch {
+            Write-Error "Failed to retrieve Docker images: $_"
+        }
+    }
+    
+    function get-docker-networks {
+        try {
+            docker network ls --format "ID={{.ID}},Name={{.Name}},Driver={{.Driver}}" | ConvertFrom-Csv | Export-Csv -Path $outputFile -Append -NoTypeInformation
+        } catch {
+            Write-Error "Failed to retrieve Docker networks: $_"
+        }
+    }
+    
+    function get-docker-volumes {
+        try {
+            docker volume ls --format "Name={{.Name}},Driver={{.Driver}},Scope={{.Scope}}" | ConvertFrom-Csv | Export-Csv -Path $outputFile -Append -NoTypeInformation
+        } catch {
+            Write-Error "Failed to retrieve Docker volumes: $_"
+        }
+    }
+    
+    Test-Docker
+    get-docker-containers
+    get-docker-images
+    get-docker-networks
+    get-docker-volumes
+    
+    Write-Host "Inventory saved to $outputFile"
+        }
 
-#         foreach ($store in $fhirstoreheartbeat) {
-#             try {
-#                 $response = Invoke-RestMethod -Uri "$store/metadata" -Method Get
-#                 Write-Output "Connecting"
-#             } catch {
-#                 Write-Error "Not Connecting"
-#             }
-#         }
-#     }
-# 4 {
-    # Write-Host "Rebooting Container"
-    # $scriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Path -Parent
+4 {
+    Write-Host "Rebooting Container"
+    $scriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Path -Parent
 
-    # # Prompt the user to enter the Docker Compose project name or directory
-    # $ProjectDir = Read-Host "Enter the path to the Docker Compose project directory"
+    # Prompt the user to enter the Docker Compose project name or directory
+    $ProjectDir = Read-Host "Enter the path to the Docker Compose project directory"
     
-    # # Validate the user input
-    # if (-not (Test-Path $ProjectDir)) {
-    #     Write-Host "The specified directory does not exist. Exiting the script." -ForegroundColor Red
-    #     exit
-    # }
+    # Validate the user input
+    if (-not (Test-Path $ProjectDir)) {
+        Write-Host "The specified directory does not exist. Exiting the script." -ForegroundColor Red
+        exit
+    }
     
-#     # Navigate to the project directory
-#     Set-Location -Path $ProjectDir
+    # Navigate to the project directory
+    Set-Location -Path $ProjectDir
     
-#     # Confirm with the user before running the 'docker compose down --remove-orphans' command
-#     $Confirmation = Read-Host "Are you sure you want to stop and remove the project, including orphan containers? (yes/no)"
-#     if ($Confirmation -eq "yes") {
-#         # Execute the Docker Compose down command with the --remove-orphans flag
-#         docker-compose down --remove-orphans
-#         docker-compose up -d 
+    # Confirm with the user before running the 'docker compose down --remove-orphans' command
+    $Confirmation = Read-Host "Are you sure you want to stop and remove the project, including orphan containers? (yes/no)"
+    if ($Confirmation -eq "yes") {
+        # Execute the Docker Compose down command with the --remove-orphans flag
+        docker-compose down --remove-orphans
+        docker-compose up -d 
     
-#         Write-Host "Docker Compose project has been stopped, and orphan containers have been removed."
-#     } else {
-#         Write-Host "Operation cancelled by the user. No changes were made." -ForegroundColor Yellow
-#     }
+        Write-Host "Docker Compose project has been stopped, and orphan containers have been removed."
+    } else {
+        Write-Host "Operation cancelled by the user. No changes were made." -ForegroundColor Yellow
+    }
     
-#     # Return to the original location
-#     # (No action needed as the script will exit after this point)
-# }
+    # Return to the original location
+    # (No action needed as the script will exit after this point)
+}
 5 {
         Write-Host "Exiting..."
         exit
