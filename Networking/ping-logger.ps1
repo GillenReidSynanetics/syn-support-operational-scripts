@@ -21,7 +21,6 @@
 .NOTES
     Made by Gillen
 #>
-# Purpose of this script is to ping the choice IP and store log file locally for further inspection
 
 # User prompted for IP address.
 $ipAddress = Read-Host "Enter the IP address you want to ping"
@@ -77,5 +76,3 @@ Average Ping:  $([math]::Round($averagePing.Average, 2)) ms
 } catch {
     Write-Host "An error occurred during the ping test: $_" -ForegroundColor Red
 }
-
-# Made by Gillen 
