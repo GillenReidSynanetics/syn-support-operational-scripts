@@ -9,8 +9,8 @@
 ########################
 
 sudo apt-get update # This lists off the available updates 
-sudo apt-get upgrade # This kicks off updating all packages to the latest versions
+sudo apt-get upgrade # This installs the newest versions of all packages currently installed on the system, without removing any packages.
 
 #######################
 
-Gillen
+# Author: Gillen

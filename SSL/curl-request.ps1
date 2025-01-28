@@ -1,34 +1,26 @@
+
+
 <#
 .SYNOPSIS
-    Executes a cURL request to a specified URI with a provided API key.
+    Sends a GET request to a specified FHIR endpoint with a provided API key.
 
 .DESCRIPTION
-    This script sends a GET request to a specified FHIR endpoint using the Invoke-RestMethod cmdlet. 
-    It bypasses SSL certificate validation by implementing a custom certificate policy.
+    This script sets up a custom certificate policy to trust all SSL certificates, prompts the user for an API key, 
+    and sends a GET request to a specified FHIR endpoint with the provided API key in the headers.
 
 .PARAMETER apiKey
-    The API key required for authentication with the FHIR endpoint.
-
-.INPUTS
-    None. The script prompts the user to enter the API key.
-
-.OUTPUTS
-    The response from the FHIR endpoint.
+    The API key to be included in the request headers for authentication.
 
 .NOTES
-    This script is intended to be used when POSTMAN is not available for the task.
-    The script is untested and should be used with caution, especially in production environments.
+    The script uses a custom certificate policy to bypass SSL certificate validation. 
+    This is generally not recommended for production environments due to security risks.
 
 .EXAMPLE
-    PS> .\curl-request.ps1
-    Please enter the API Key: <your_api_key>
-    (Response from the FHIR endpoint)
+    .\curl-request.ps1
+    Prompts the user to enter an API key and sends a GET request to the specified FHIR endpoint.
 #>
-# Runs curl request should POSTMAN not be available for the task.
 
-# Untested
-
-
+# Set up a custom certificate policy to trust all SSL certificates
 add-type @"
 
 using http://System.Net ;
