@@ -1,11 +1,10 @@
+
 $mainmenu = {
     Write-Host "***************"
     Write-Host "SSL Management Menu"
     Write-Host 
     Write-Host "1. Encrypt"  # Option to run the backup script
     Write-Host "2. Decrypt"  # Option to run the validation script
-    Write-Host "3. Inventory Reporter"  # Option to to sample local docker enviroment (Not tested yet)
-    Write-Host "4. Reboot Container (Not tested yet)"  # Option to reboot the container
     Write-Host "5. Exit"  # Option to exit the script
     Write-Host "Select option and press enter"
 }
