@@ -38,7 +38,9 @@ param (
     [string]$outputFile = ".\docker_data.csv"
 )
 
-@("Type,Name,Details") | Set-Content -Path $outputFile
+if (-not (Test-Path $outputFile)) {
+    @("Type,Name,Details") | Set-Content -Path $outputFile
+}
 
 function Test-Docker {
     if (-not(Get-Command "docker" -ErrorAction SilentlyContinue)) {
@@ -49,7 +51,7 @@ function Test-Docker {
 
 function get-docker-containers {
     try {
-        docker ps --format "ID={{.ID}},Name={{.Names}},Image={{.Image}},Status={{.Status}},Ports={{.Ports}}" | ConvertFrom-Csv | Export-Csv -Path $outputFile -Append -NoTypeInformation
+        docker ps --format "ID={{.ID}},Name={{.Names}},Image={{.Image}},Status={{.Status}},Ports={{.Ports}}" | ConvertFrom-Csv | Export-Csv -Path $outputFile -Append -NoTypeInformation -Force
     } catch {
         Write-Error "Failed to retrieve Docker containers: $_"
     }
@@ -57,7 +59,7 @@ function get-docker-containers {
 
 function get-docker-images {
     try {
-        docker images --format "ID={{.ID}},Repository={{.Repository}},Tag={{.Tag}},Size={{.Size}}" | ConvertFrom-Csv | Export-Csv -Path $outputFile -Append -NoTypeInformation
+        docker images --format "ID={{.ID}},Repository={{.Repository}},Tag={{.Tag}},Size={{.Size}}" | ConvertFrom-Csv | Export-Csv -Path $outputFile -Append -NoTypeInformation -Force
     } catch {
         Write-Error "Failed to retrieve Docker images: $_"
     }
@@ -65,7 +67,7 @@ function get-docker-images {
 
 function get-docker-networks {
     try {
-        docker network ls --format "ID={{.ID}},Name={{.Name}},Driver={{.Driver}}" | ConvertFrom-Csv | Export-Csv -Path $outputFile -Append -NoTypeInformation
+        docker network ls --format "ID={{.ID}},Name={{.Name}},Driver={{.Driver}}" | ConvertFrom-Csv | Export-Csv -Path $outputFile -Append -NoTypeInformation -Force
     } catch {
         Write-Error "Failed to retrieve Docker networks: $_"
     }
@@ -73,7 +75,7 @@ function get-docker-networks {
 
 function get-docker-volumes {
     try {
-        docker volume ls --format "Name={{.Name}},Driver={{.Driver}},Scope={{.Scope}}" | ConvertFrom-Csv | Export-Csv -Path $outputFile -Append -NoTypeInformation
+        docker volume ls --format "Name={{.Name}},Driver={{.Driver}},Scope={{.Scope}}" | ConvertFrom-Csv | Export-Csv -Path $outputFile -Append -NoTypeInformation -Force
     } catch {
         Write-Error "Failed to retrieve Docker volumes: $_"
     }
