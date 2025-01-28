@@ -11,11 +11,6 @@
 .OUTPUTS
     Displays network configuration details in a formatted table.
 
-.NOTES
-    Author: [Your Name]
-    Date: [Date]
-    Version: 1.0
-
 .EXAMPLE
     PS C:\> .\network-probe.ps1
     This will execute the script and display the network information on the console.
