@@ -34,6 +34,11 @@
 # Define the log file path
 $logFilePath = "C:\[foldercreated]\*relevantnamingscheme*.txt"
 
+# Create the log file if it doesn't exist
+if (-not (Test-Path -Path $logFilePath)) {
+    New-Item -ItemType File -Path $logFilePath -Force
+}
+
 # Function to log messages
 function Log-Message {
     param (
