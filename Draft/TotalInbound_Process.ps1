@@ -1,19 +1,43 @@
-﻿try {
-    cls
+﻿<#
+.SYNOPSIS
+    Processes inbound log files and generates a summary report.
 
+.DESCRIPTION
+    This script reads and processes multiple inbound log files to extract and summarize various metrics related to message processing.
+    It identifies and counts different types of messages, errors, and discrepancies, and generates a summary report for each log file.
+
+.PARAMETER Logs
+    An array of file paths to the log files that need to be processed.
+
+.PARAMETER Temp
+    The directory path where temporary scripts or files are stored.
+
+.NOTES
+    Author: Mark
+    FilePath: /GillenReidSynanetics/syn-support-operational-scripts/Azure/Intune/Mark/TotalInbound_Process.ps1
+
+.EXAMPLE
+    .\TotalInbound_Process.ps1
+    This will execute the script and process the log files specified in the $Logs array.
+
+#>
+try {
+    Clear-Host
+
+    $scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
     $Logs = @(
-        "C:\Synanetics\SQL\RTGXCH_TotalInbound_today.log"
-        "C:\Synanetics\SQL\EXCHANGE_TotalInbound_today.log"
+        "$scriptDirectory\RTGXCH_TotalInbound_today.log"
+        "$scriptDirectory\EXCHANGE_TotalInbound_today.log"
     )
 
-    $Temp = "C:\Synanetics\Scripts\Temp"
+    $Temp = "$scriptDirectory\Temp"
 
     ForEach ($Log in $Logs) {
 
 
         
 
-        if ($reader -ne $null) {
+        if ($null -ne $reader) {
             $reader.Close()
             $reader.Dispose()
         }
@@ -61,24 +85,24 @@
                 #if(  !$ProcessMDM) {
                #     $reader.ReadLine()
                # }
-                $input = $reader.ReadLine().Split("`t")
+                $logInput = $reader.ReadLine().Split("`t")
                 
-                if ($input[0] -eq "SourceConfigName") {
+                if ($logInput[0] -eq "SourceConfigName") {
                     $ProcessTotals = $True
-                } elseif ($input[0] -eq "RawContent") {
+                } elseif ($logInput[0] -eq "RawContent") {
                     $ProcessMDM = $True
-                } elseif ($input[0] -eq "Identifier" -and $input[1] -eq "SessionId") {
+                } elseif ($logInput[0] -eq "Identifier" -and $logInput[1] -eq "SessionId") {
                     "Found Identifier at line $linecount"
                     $ProcessIdentifiers = $True
-                } elseif ($input[0] -eq "PDFFileName" -and $input[1] -eq "SessionId") {
+                } elseif ($logInput[0] -eq "PDFFileName" -and $logInput[1] -eq "SessionId") {
                     "Found Identifier at line $linecount"
                     $ProcessPDF = $True
-                } elseif ($input[0] -eq "SessionId" -and $input[1] -eq "SourceConfigName" -and $input[2] -eq "AlertText") {
+                } elseif ($logInput[0] -eq "SessionId" -and $logInput[1] -eq "SourceConfigName" -and $logInput[2] -eq "AlertText") {
                     #SessionId	SourceConfigName	AlertText
                     "Found Error Log at line $linecount"
                     $ProcessErrorLog = $True
 
-                } elseif ($input[0] -like "* Rows(s) Affected") {
+                } elseif ($logInput[0] -like "* Rows(s) Affected") {
                     
                      if ($ProcessPDF) {
                         "Stopping Process PDF at line $linecount"

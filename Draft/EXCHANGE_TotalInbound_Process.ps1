@@ -1,8 +1,28 @@
-﻿try {
-    cls
+﻿<#
+.SYNOPSIS
+    Processes and analyzes log data from the EXCHANGE_TotalInbound.log file.
+
+.DESCRIPTION
+    This script reads and processes log data from the specified log file to calculate various metrics related to message processing.
+    It calculates totals for inbound and outbound messages, discrepancies, conversion errors, and MDM message details.
+
+.PARAMETERS
+    None
+
+.NOTES
+    Author: Mark Bain   
+    Version: 1.0
+
+.EXAMPLE
+    .\EXCHANGE_TotalInbound_Process.ps1
+    This will execute the script and output the calculated metrics to the console.
+
+#>
+try {
+    Clear-Host
     $Log = "C:\Synanetics\SQL\EXCHANGE_TotalInbound.log"
 
-    if ($reader -ne $null) {
+    if ($null -ne $reader) {
         $reader.Close()
         $reader.Dispose()
     }
@@ -18,22 +38,22 @@
     $reader = New-Object System.IO.StreamReader($Log)
     if ($reader -ne $null) {
         while (!$reader.EndOfStream) {
-            $input = $reader.ReadLine().Split("`t")
+            $logInput = $reader.ReadLine().Split("`t")
 
-            if ($input[0] -eq "SourceConfigName") {
+            if ($logInput[0] -eq "SourceConfigName") {
                 "Start Totals"
                 $ProcessTotals = $True
-            } elseif ($input[0] -eq "RawContent") {
+            } elseif ($logInput[0] -eq "RawContent") {
                 "Start MDM"
                 $ProcessMDM = $True
-            } elseif ($input[0] -eq "") {
+            } elseif ($logInput[0] -eq "") {
      
                  $ProcessTotals = $False
         
             } elseif ($ProcessTotals) {
-                $source = $input[0]
-                $target =   $input[1]
-                $messages =  $input[2]
+                $source = $logInput[0]
+                $target =   $logInput[1]
+                $messages =  $logInput[2]
                
 
                 if (($source -eq "MEDITECH.INBOUND.FILE.ED" -or $source -eq "MEDITECH.INBOUND.FILE.INPATIENT") -and ($target -eq "Meditech.Document.Inbound.DocumentConverter")) {
@@ -48,20 +68,20 @@
                     $source + " -> " + $target + " = " + $messages
                 }
             }  elseif ($ProcessMDM) {
-                 if (($input[0] -as [int]) -is [int]) {
+                 if (($logInput[0] -as [int]) -is [int]) {
 
                 
-                $session = $input[0]
+                $session = $logInput[0]
                 $sessions += $session
-                $line = $input[1]
+                $line = $logInput[1]
                 $i++
                
             } else {
-                $line = $input[0]
+                $line = $logInput[0]
             }
            
 
-            if ($line -eq $null) {Continue}
+            if ($null -eq $line) {Continue}
 
             $hl7 = $line.Split("|")
 
@@ -74,7 +94,6 @@
                     #Add-Content -Path $Output $Text
                # }
                 $Document = ""
-                $PDFSent = $False
                 $PDFProcessed = $False
                 
             }
@@ -121,7 +140,7 @@
 
 
      $total = $populated + $empty 
-     "Messages from Cito Database:`t$cito_total_inbound"
+     $totalMessages = $populated + $empty 
      "Total MDM Messages:`t`t`t`t$MDMCount"
      $MDMdiscrepancy = $cito_total_outbound - $MDMCount
      "Discrepancy :`t`t`t`t`t$MDMdiscrepancy"
