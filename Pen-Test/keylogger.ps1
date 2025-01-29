@@ -12,8 +12,7 @@
     The path to the file where key presses will be logged.
 
 .NOTES
-    Author: [Your Name]
-    Date: [Date]
+    Author: Gillen Reid
     This script is for educational purposes only. Unauthorized use of keyloggers 
     is illegal and unethical.
 
