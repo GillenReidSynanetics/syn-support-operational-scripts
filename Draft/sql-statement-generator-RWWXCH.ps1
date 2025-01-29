@@ -25,11 +25,11 @@ Original Author: Mark Bain
 
 #>
 try {
-    cls
+    Clear-Host
 
     $csv = Read-Host -Prompt "Enter the full path to the CSV file (e.g., C:\Users\MDM-Document-Summary.csv)"
 
-    if ($reader -ne $null) {
+    if ($null -ne $reader) {
         $reader.Close()
         $reader.Dispose()
     }
