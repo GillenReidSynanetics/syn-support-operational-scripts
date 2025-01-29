@@ -5,7 +5,7 @@ $SQLResult = "C:\Synanetics\SQL\RTGXCHAlerts.log"
 
 
 try {
-    cls
+    Clear-Host
     $reader = New-Object System.IO.StreamReader($SQLResult)
     if ($reader -ne $null) {
         $Searching = $False
