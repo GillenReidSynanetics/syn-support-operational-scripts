@@ -237,7 +237,6 @@ try {
                         #Add-Content -Path $Output $Text
                    # }
                     $Document = ""
-                    $PDFSent = $False
                     $PDFProcessed = $False
                 
                 }
@@ -345,7 +344,7 @@ try {
        ForEach ($session in $errorSessions) {
 
          $Pdf = $Sessions_PDF[$session]
-         if ($Pdf -ne $null) {
+         if ($null -ne $Pdf) {
             $pdf_exists =  Test-Path $Pdf
             if (!$pdf_exists) {
                 $fileRef  = $Pdf.Split("_")[0].Split("\")[-1]
