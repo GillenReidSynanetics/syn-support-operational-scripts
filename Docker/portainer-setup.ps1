@@ -23,7 +23,15 @@
     and validate the creation of the firewall rules.
 #>
 # Define the ports to open
-$LogFilePath = Split-Path -Path $LogFilePath -Parent
+$logFilePath = "C:\Users\Public\Desktop\firewall-log.txt"
+
+# Ensure the log file is created
+if (-not (Test-Path -Path $logFilePath)) {
+    Write-Output "Creating log file at $logFilePath"
+    New-Item -Path $logFilePath -ItemType File -Force
+} else {
+    Write-Output "Log file already exists at $logFilePath"
+}
 
 $ports = @(
     @{Port = 8000; Protocol = "TCP"; Name = "Portainer Agent Communication Port (TCP 8000)"},
@@ -40,14 +48,6 @@ foreach ($port in $ports) {
                          -LocalPort $port.Port `
                          -Action Allow `
                          -Profile Any
-}
-
-# Ensure the log file is created
-if (-not (Test-Path -Path $logFilePath)) {
-    Write-Output "Creating log file at $logFilePath"
-    New-Item -Path $logFilePath -ItemType File -Force
-} else {
-    Write-Output "Log file already exists at $logFilePath"
 }
 
 foreach ($port in $ports) {
@@ -69,7 +69,7 @@ foreach ($port in $ports) {
 Write-Output "Writing firewall rules to log file: $logFilePath"
 foreach ($port in $ports) {
     $logEntry = "Port: $($port.Port), Protocol: $($port.Protocol), Name: $($port.Name)"
-    Add-Content -Path $logFilePath -Value $logEntry
+    Add-Content -Path $logFilePath -Value $logEntry -Force
 }
 
 Write-Output "Log file created at $logFilePath"
