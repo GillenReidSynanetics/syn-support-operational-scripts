@@ -23,6 +23,8 @@
     and validate the creation of the firewall rules.
 #>
 # Define the ports to open
+$LogFilePath = Split-Path -Path $LogFilePath -Parent
+
 $ports = @(
     @{Port = 8000; Protocol = "TCP"; Name = "Portainer Agent Communication Port (TCP 8000)"},
     @{Port = 9443; Protocol = "TCP"; Name = "Portainer UI Secure Access (TCP 9443)"},
@@ -40,9 +42,6 @@ foreach ($port in $ports) {
                          -Profile Any
 }
 
-# Define the log file path
-$logFilePath = ".\portainer_firewall_rules.log"
-
 # Ensure the log file is created
 if (-not (Test-Path -Path $logFilePath)) {
     Write-Output "Creating log file at $logFilePath"
@@ -52,7 +51,7 @@ if (-not (Test-Path -Path $logFilePath)) {
 }
 
 foreach ($port in $ports) {
-    $rule = Get-NetFirewallRule -DisplayName $port.Name -ErrorAction SilentlyContinue
+    $rule = Get-NetFirewallRule -DisplayName $port.Name 
     if ($null -ne $rule) {
         Write-Output "Validation successful: Firewall rule for port $($port.Port) ($($port.Name)) exists."
     } else {
@@ -79,5 +78,3 @@ Write-Output "Log file updated at $logFilePath"
 
 # Pause the script to allow the user to read the output
 Read-Host -Prompt "Press Enter to exit"
-
-
